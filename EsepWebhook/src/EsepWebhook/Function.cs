@@ -1,6 +1,6 @@
+using System.Text;
 using Amazon.Lambda.Core;
 using Newtonsoft.Json;
-using System.Text;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -13,23 +13,23 @@ public class Function
     /// <summary>
     /// A simple function that takes a string and does a ToUpper
     /// </summary>
-    /// <param name="input">The event for the Lambda function handler to process.</param>
-    /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
+    /// <param name="input"></param>
+    /// <param name="context"></param>
     /// <returns></returns>
-    public string FunctionHandler(string input, ILambdaContext context)
+    public string FunctionHandler(object input, ILambdaContext context)
     {
         context.Logger.LogInformation($"FunctionHandler received: {input}");
 
         dynamic json = JsonConvert.DeserializeObject<dynamic>(input.ToString());
 
-        /* // Testing from postman, you can use this code to test the function
+        // Testing from postman, you can use this code to test the function
+        /*
         context.Logger.LogInformation($"Body: {json.body}");
-        dynamic body = json.body;
+        dynamic body = JsonConvert.DeserializeObject<dynamic>(json.body.ToString());
         context.Logger.LogInformation($"Issue: {body.issue}");
         context.Logger.LogInformation($"Html: {body.issue.html_url}");
         string payload = $"{{'text':'Issue Created: {body.issue.html_url}'}}";
         */
-        
         
         string payload = $"{{'text':'Issue Created: {json.issue.html_url}'}}";
 
